@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({silent: true});
 const fetchTrello = require('./lib/trello');
 const fetchJIRA = require('./lib/jira');
 const formatMessage = require('./lib/format');
