@@ -34,3 +34,8 @@ Trello and JIRA status, served fresh every morning
 * `JIRA_API_URL`: JIRA API URL. Something like https://company.atlassian.net/rest/api/
 * `JIRA_BASIC_AUTH`: JIRA basic auth string. (`username:password`)
 * `JIRA_PROJECT_IDS`: JIRA project IDs to consider. Find these at the `rest/api/2/project` endpoint.
+
+### GitHub
+
+* `GITHUB_AUTH`: GitHub basic auth string. Please use a Personal Access Token with read rights only. (`username:token`)
+* `GITHUB_REPOS`: Fully qualified repo names, comma-separated (`valohai/ausma,jquery/jquery`)
