@@ -1,35 +1,16 @@
 require('dotenv').config({silent: true});
-const fetchTrello = require('./lib/trello');
-const fetchJIRA = require('./lib/jira');
 const formatMessage = require('./lib/format');
 const postToSlack = require('./lib/slack');
 const parseQs = require('querystring').parse;
 const flatten = require('lodash/flatten');
-
-
-const sources = [];
-if (process.env.TRELLO_KEY && process.env.TRELLO_BOARDS) {
-  sources.push(fetchTrello({
-    key: process.env.TRELLO_KEY,
-    token: process.env.TRELLO_TOKEN,
-    boards: process.env.TRELLO_BOARDS.split(/,\s+/),
-  }));
-}
-
-if (process.env.JIRA_API_URL && process.env.JIRA_PROJECT_IDS) {
-  sources.push(fetchJIRA({
-    apiUrl: process.env.JIRA_API_URL,
-    auth: process.env.JIRA_BASIC_AUTH,
-    projects: process.env.JIRA_PROJECT_IDS.split(/,\s+/),
-  }));
-}
+const getSourcePromises = require('./lib/sources');
 
 const formatOptions = {
   statuses: (process.env.STATUSES || 'In Progress').split(/,\s*/g),
   userMap: parseQs((process.env.USER_MAP || ''), ',', '='),
 };
 
-Promise.all(sources).then(
+Promise.all(getSourcePromises()).then(
   (issueLists) => flatten(issueLists)
 ).then(
   (issues) => formatMessage(formatOptions, issues)
